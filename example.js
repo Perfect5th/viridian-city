@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   mainSprite.render()
   .then(() => {
-    document.addEventListener("keydown", e => mainSprite.move(e));
+    document.addEventListener("keydown", e => mainSprite.walk(e));
     //document.addEventListener("keyup", e => mainSprite.endMove(e));
   });
 
