@@ -1,0 +1,16 @@
+
+.gameBoy {
+    position: relative;
+}
+
+#background,
+#gameScreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#gameScreen {
+    z-index: 2;
+}
