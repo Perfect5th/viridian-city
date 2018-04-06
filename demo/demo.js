@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let demoGame = new VCGame({
     scaling: 3,
     tileSize: 16,
-    startTile: [0, 0],
+    startTile: [18, 20],
   });
 
   demoGame.addMainCharacter({
@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
   demoGame.addBackground({
     canvas: bgCanvas,
     image: bgImage,
-    height: 640,
-    width: 576,
+    width: 640,
+    height: 576,
   });
 
   for (let i = 0; i < 40 * 36 - 1; i++) {
