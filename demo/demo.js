@@ -30,10 +30,34 @@ document.addEventListener('DOMContentLoaded', () => {
     height: 576,
   });
 
-  for (let i = 0; i < 40 * 36 - 1; i++) {
-    let tile = new Tile({ walkable: true });
+  /*for (let i = 0; i < 40 * 36 - 1; i++) {
+    let tile = new Tile({
+      walkable: true,
+      interactible: true,
+    });
     demoGame.addTile(tile);
-  }
+  }*/
+
+  let tileMap = [{
+    type: 'range',
+    start: [0, 0],
+    end: [20, 36],
+    options: {
+      walkable: true,
+      interactible: false,
+    },
+  },
+  {
+    type: 'range',
+    start: [21, 0],
+    end: [40, 36],
+    options: {
+      walkable: true,
+      interactible: true,
+    }
+  }];
+
+  demoGame.addTile(tileMap);
 
   demoGame.start();
 
