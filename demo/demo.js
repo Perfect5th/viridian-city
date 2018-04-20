@@ -102,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
       height: 48,
       xLoc: 0,
       yLoc: (144 - 48) * 3,
-      scaling: 3,
     },
   });
 
