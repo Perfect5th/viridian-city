@@ -30,14 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     height: 128,
   });
 
-  /*for (let i = 0; i < 40 * 36 - 1; i++) {
-    let tile = new Tile({
-      walkable: true,
-      interactible: true,
-    });
-    demoGame.addTile(tile);
-  }*/
-
   let tileMap = [
     {
       type: 'range',
@@ -88,27 +80,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   demoGame.addTile(tileMap);
 
-  let dialogueBg = new Image();
-  dialogueBg.src = './dialogues/background.png';
-  let dialogueTile = new DialogueTile({
+  demoGame.addDialogueTile({
+    x: 4,
+    y: 3,
     walkable: false,
     interactible: true,
-    dialogueOptions: {
-      dialogue: 'Welcome to the demo!',
-      dialogueBackground: dialogueBg,
-      letterMap: dialogueBg,
-      context: bgCanvas.getContext('2d'),
-      width: 160,
-      height: 48,
-      xLoc: 0,
-      yLoc: (144 - 48) * 3,
-    },
+    canvas: bgCanvas,
+    dialogue: 'Welcome to the demo!',
+    background: './dialogues/background.png',
+    width: 160,
+    height: 48,
+    xLoc: 0,
+    yLoc: (144 - 48) * 3,
   });
-
-  dialogueTile.x = 4;
-  dialogueTile.y = 3;
-
-  demoGame.addTile(dialogueTile)
 
   demoGame.start();
 
