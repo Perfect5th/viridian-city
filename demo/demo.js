@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   demoGame.addCharacter(true, {
+    currentTile: [5, 4],
     sprite: './sprites/main.png',
   });
 
@@ -78,5 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   demoGame.start();
+
+  demoGame.bindControlSchema({
+    ArrowUp: 'moveUp',
+    ArrowLeft: 'moveLeft',
+    ArrowDown: 'moveDown',
+    ArrowRight: 'moveRight',
+    e: 'interact',
+    f: 'wasabi',
+  });
 
 });
