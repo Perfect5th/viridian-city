@@ -1,33 +1,16 @@
-import { DialogueTile } from '../lib/base/tile.js';
 import VCGame from '../lib/main.js';
 
 /* What I want this to look like */
 
-let mainSprite = new Image();
-let bgImage = new Image();
-mainSprite.src = './sprites/main.png';
-bgImage.src = './backgrounds/vc-inset.png';
-
 document.addEventListener('DOMContentLoaded', () => {
 
-  let mainCanvas = document.getElementById('mainCanvas');
-  let bgCanvas = document.getElementById('bgCanvas');
-
-  let demoGame = new VCGame({
+  let demoGame = new VCGame('gameBoy', {
     scaling: 3,
     tileSize: 16,
-    startTile: [5, 4],
   });
 
-  demoGame.addMainCharacter({
-    canvas: mainCanvas,
-    image: mainSprite,
-  });
-  demoGame.addBackground({
-    canvas: bgCanvas,
-    image: bgImage,
-    width: 192,
-    height: 128,
+  demoGame.addCharacter(true, {
+    sprite: './sprites/main.png',
   });
 
   let tileMap = [
@@ -78,20 +61,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  demoGame.addTile(tileMap);
+  demoGame.addLevel({
+    background: './backgrounds/vc-inset.png',
+  }, tileMap);
+
+  demoGame.addDialogueStyle('default', {
+    background: './dialogues/background.png',
+    start: [0, 96],
+    end: [160, 144],
+  });
 
   demoGame.addDialogueTile({
-    x: 4,
-    y: 3,
-    walkable: false,
-    interactible: true,
-    canvas: bgCanvas,
-    dialogue: 'Welcome to the demo!',
-    background: './dialogues/background.png',
-    width: 160,
-    height: 48,
-    xLoc: 0,
-    yLoc: (144 - 48) * 3,
+    dialogue: "Welcome to the demo!",
+    loc: [4, 3],
+    style: 'default',
   });
 
   demoGame.start();
