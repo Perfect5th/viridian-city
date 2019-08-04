@@ -48,16 +48,17 @@ const convertToTiles = (state, pixels) => pixels / state.tileSize;
  */
 const drawImage = (state, imageLoader, entity, image, canvas, drawArgs) => {
   const newState = imageLoader(state);
+  const _image = newState[entity][image];
+  const ctx = newState[canvas].getContext(CANVAS_CTX);
 
-  const drawCallback = newState[entity][image].addEventListener('load', () => {
-    const _canvas = newState[canvas];
-    const ctx = _canvas.getContext(CANVAS_CTX);
-    const _image = newState[entity][image];
-
+  if (_image.src && _image.complete) {
     ctx.drawImage(_image, ...drawArgs);
-
-    _image.removeEventListener('load', drawCallback);
-  });
+  } else {
+    const drawCallback = _image.addEventListener('load', () => {
+      ctx.drawImage(_image, ...drawArgs);
+      _image.removeEventListener('load', drawCallback);
+    });
+  }
 
   return newState;
 };

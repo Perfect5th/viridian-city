@@ -81,5 +81,6 @@ export default function bigBang(
 
   document.addEventListener('keydown', ke => {
     state = onKey(state, ke);
+    console.log(state.playChar.location);
   });
 }
