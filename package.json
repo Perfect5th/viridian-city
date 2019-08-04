@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Perfect5th/viridian-city/issues"
   },
-  "homepage": "https://github.com/Perfect5th/viridian-city#readme"
+  "homepage": "https://github.com/Perfect5th/viridian-city#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  }
 }
