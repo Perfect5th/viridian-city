@@ -9,6 +9,7 @@ const onKey = (state, ke) => {
 
   switch (key) {
     default:
+      console.log(key);
       return state;
   }
 }
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const playChar = {
     location: {
       x: 0,
-      y: 10
+      y: 0
     },
     image: pcImage
   };
