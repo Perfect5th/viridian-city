@@ -1,5 +1,6 @@
 import bigBang from './universe';
 import bgImage from '../assets/background.png';
+import pcImage from '../assets/playchar.png';
 
 const onTick = state => state;
 
@@ -16,8 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const level = {
     bgImage
   };
+  const playChar = {
+    location: {
+      x: 0,
+      y: 10
+    },
+    image: pcImage
+  };
 
   bigBang({
-    level
-  }, onKey, onTick);
+    level,
+    playChar
+  }, {}, onTick, onKey);
 });

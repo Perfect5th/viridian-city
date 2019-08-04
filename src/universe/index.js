@@ -38,7 +38,7 @@ const setup = (state, settings = {}) => {
   _screen.appendChild(_charCanvas);
 
   const tileSize = settings.tileSize || CANVAS_DEFAULTS.TILE_SIZE;
-  const playChar = settings.playChar || PLAY_CHAR_DEFAULTS;
+  const playChar = state.playChar || PLAY_CHAR_DEFAULTS;
 
   return {
     ...state,
@@ -101,50 +101,139 @@ const getBgSx = state => getBgCoord(state, 'x');
  */
 const getBgSy = state => getBgCoord(state, 'y');
 
+const drawImage = (state, imageLoader, entity, image, canvas, drawArgs) => {
+  const newState = imageLoader(state);
+
+  const drawCallback = newState[entity][image].addEventListener('load', () => {
+    const _canvas = newState[canvas];
+    const ctx = _canvas.getContext(CANVAS_CTX);
+    const _image = newState[entity][image];
+
+    ctx.drawImage(_image, ...drawArgs);
+
+    _image.removeEventListener('load', drawCallback);
+  });
+
+  return newState;
+};
+
 /*
  * drawBackground: load background image (if needed), then draw it on canvas.
  * State -> State
  *    side-effects: draws image to canvas.
  */
-const drawBackground = state => {
-  const newState = loadBgImageIfNeeded(state);
+const drawBackground = state => drawImage(
+  state,
+  loadBgImageIfNeeded,
+  'level',
+  '_bgImage',
+  '_bgCanvas',
+  [
+    getBgSx(state),
+    getBgSy(state),
+    state._bgCanvas.width,
+    state._bgCanvas.height,
+    0,
+    0,
+    state._bgCanvas.width,
+    state._bgCanvas.height
+  ]
+);
 
-  const drawCallback = newState.level._bgImage.addEventListener('load', () => {
-    const {_bgCanvas} = newState;
-    const ctx = _bgCanvas.getContext(CANVAS_CTX);
-    const {_bgImage} = newState.level;
+/*
+ * loadPcImageIfNeeded: loads the player character image if it hasn't been
+ *                      done.
+ * State -> State
+ */
+const loadPcImageIfNeeded = state => {
+  if (state.playChar._image instanceof Image) {
+    return state;
+  }
 
-    ctx.drawImage(
-      _bgImage,                 // image
-      getBgSx(newState),        // sx
-      getBgSy(newState),        // sy
-      _bgCanvas.width,          // sWidth
-      _bgCanvas.height,         // sHeight
-      0,                        // dx
-      0,                        // dy
-      _bgCanvas.width,          // dWidth
-      _bgCanvas.height          // dHeight
-    );
+  const _image = new Image();
+  _image.src = state.playChar.image;
 
-    _bgImage.removeEventListener('load', drawCallback);
-  })
-
-  return newState;
+  return {
+    ...state,
+    playChar: {
+      ...state.playChar,
+      _image
+    }
+  };
 };
 
-const drawCharacters = state => state;
+/*
+ * getPcSx: get player character source image x
+ * State -> Natural
+ */
+const getPcSx = state => 0;
+
+/*
+ * getPcSy: get player character source image y
+ * State -> Natural
+ */
+const getPcSy = state => 0;
+
+/*
+ * getPcD: get player character position on canvas in given dimension.
+ * State, String -> Number
+ */
+const getPcD = (state, dim) => ((state._charCanvas[dim] - state.tileSize) / 2);
+
+/*
+ * getPcDx: get player character position on canvas in x dimension.
+ * State -> Number
+ */
+const getPcDx = state => getPcD(state, 'width');
+
+/*
+ * getPcDx: get player character position on canvas in y dimension.
+ * State -> Number
+ */
+const getPcDy = state => getPcD(state, 'height');
+
+/*
+ * drawPlayerCharacter: load player character image (if needed), then draw on
+ *                      canvas.
+ * State -> State
+ *    side-effects: draws image to canvas
+ */
+const drawPlayerCharacter = state => drawImage(
+  state,
+  loadPcImageIfNeeded,
+  'playChar',
+  '_image',
+  '_charCanvas',
+  [
+    getPcSx(state),
+    getPcSy(state),
+    state.tileSize,
+    state.tileSize,
+    getPcDx(state),
+    getPcDy(state),
+    state.tileSize,
+    state.tileSize
+  ]
+);
+
+const drawNPCs = npcs => npcs;
+
+/*
+ * drawCharacters: load character images (if needed), then draw on canvas.
+ * State -> State
+ *    side-effects: draws images to canvas
+ */
+const drawCharacters = state => drawNPCs(drawPlayerCharacter(state));
 
 /*
  * draw: load images (if needed), then draw on canvas.
  * State -> State
  *    side-effects: draws images to canvas
  */
-const draw = state => {
-  return drawCharacters(drawBackground({
-    ...state,
-    shouldDraw: false
-  }));
-};
+const draw = state => drawCharacters(drawBackground({
+  ...state,
+  shouldDraw: false
+}));
 
 /*
  * bigBang: sets up the event loop and renders/calls callbacks as appropriate.
