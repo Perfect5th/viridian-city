@@ -4,7 +4,8 @@
   "description": "profile maker",
   "main": "example.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,6 @@
   "homepage": "https://github.com/Perfect5th/viridian-city#readme",
   "devDependencies": {
     "parcel-bundler": "^1.12.3"
-  }
+  },
+  "dependencies": {}
 }
